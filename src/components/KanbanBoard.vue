@@ -4,10 +4,11 @@ import Stage from '@/json/stages.json'
 import Data1 from '@/json/contacts-stage-018f3d6c-74b0-76ee-8896-ec7d51d576df.json'
 import Data2 from '@/json/contacts-stage-018f3d6b-a5b7-7124-b0d0-cf5a081f869b.json'
 import Data3 from '@/json/contacts-stage-018f3d6b-335e-7c8e-b5c7-7792b3ee9f15.json'
-console.log('stage', Stage)
+console.log('Data1', Data1)
 
 interface Card {
   full_name: string
+  email: string
 }
 
 interface Stage {
@@ -73,11 +74,11 @@ const onDrop = (event: DragEvent, stageIndex: number, cardIndex: number | null) 
 setData()
 </script>
 <template>
-  <div class="kanban-board flex overflow-x-auto">
+  <div class="kanban-board flex overflow-x-auto p-4 overflow-y-hidden max-h-dvh">
     <div
       v-for="(stage, index) in stages"
       :key="index"
-      class="kanban-stage flex-shrink-0 w-64 p-4 bg-gray-100 rounded-lg m-2 flex flex-col gap-2"
+      class="kanban-stage flex-shrink-0 w-64 p-4 bg-gray-100 rounded-lg m-2 flex flex-col gap-2 overflow-y-hidden"
       @dragover.prevent
       @drop="onDrop($event, index, null)"
     >
@@ -87,6 +88,7 @@ setData()
       >
         {{ stage.name }}
       </h2>
+
       <div class="flex flex-col overflow-auto">
         <div
           v-for="(card, cardIndex) in stage.cards"
@@ -97,7 +99,10 @@ setData()
           @dragover.prevent
           @drop="onDrop($event, index, cardIndex)"
         >
-          {{ card.full_name }}
+          <div class="">
+            {{ card.full_name }}
+          </div>
+          <div class="text-sm truncate">{{ card.email }}</div>
         </div>
       </div>
     </div>
@@ -106,33 +111,15 @@ setData()
 
 <style scoped>
 .kanban-board {
-  display: flex;
-  overflow-x: auto;
-  padding: 1rem;
   scroll-snap-type: x mandatory;
-  overflow-y: hidden;
-  max-height: 100dvh;
 }
 
 .kanban-stage {
-  flex-shrink: 0;
-  width: 16rem;
-  padding: 1rem;
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-  margin: 0.5rem;
   scroll-snap-align: start;
-  overflow-y: hidden;
 }
 
 .kanban-card {
   transition: transform 0.2s ease-in-out;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  cursor: grab;
 }
 
 .kanban-card:active {
